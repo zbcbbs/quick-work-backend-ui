@@ -1,5 +1,5 @@
 {
-  "name": "qlq-boot-rdp-backend-ui",
+  "name": "quick-work-backend-ui",
   "version": "1.0.1",
   "description": "快速开发平台后台",
   "author": "北辰",
@@ -27,10 +27,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/zbcbbs/qlq-boot-rdp-backend-ui.git"
+    "url": "https://gitee.com/zbcbbs/quick-work-backend-ui.git"
   },
   "bugs": {
-    "url": "https://gitee.com/zbcbbs/qlq-boot-rdp-backend-ui/issues",
+    "url": "https://gitee.com/zbcbbs/quick-work-backend-ui/issues",
     "email": "zbcbbs@163.com"
   },
   "dependencies": {
