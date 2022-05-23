@@ -1,0 +1,40 @@
+<template>
+  <el-tabs v-model="activeName" style="padding-left: 8px;">
+    <el-tab-pane label="邮箱配置" name="first">
+      <Config />
+    </el-tab-pane>
+    <el-tab-pane label="发送邮件" name="second">
+      <Send />
+    </el-tab-pane>
+    <el-tab-pane label="使用说明" name="third">
+      <div>
+        <blockquote class="my-blockquote"> 配置邮件服务器</blockquote>
+        <pre class="my-code">
+# 邮件服务器的SMTP地址，默认为smtp
+# 邮件服务器的SMTP端口，默认465或者25
+# 发件人邮箱，必须正确，否则发送异常
+# 用户名，默认为发件人邮箱前缀
+# 密码（注意，某些邮箱需要为SMTP服务单独授权并设置密码，例如QQ和163等）
+# 是否开启ssl，默认开启
+</pre>
+      </div>
+    </el-tab-pane>
+  </el-tabs>
+</template>
+
+<script>
+import Config from './config'
+import Send from './send'
+export default {
+  name: 'Email',
+  components: { Config, Send },
+  data() {
+    return {
+      activeName: 'second'
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>

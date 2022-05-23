@@ -1,0 +1,105 @@
+<template>
+  <div class="app-container">
+    <div class="head-container">
+      <Search />
+      <crudOperation>
+        <el-button
+          slot="left"
+          v-permission="['monitor:log:clear']"
+          class="filter-item"
+          type="danger"
+          icon="el-icon-delete"
+          size="mini"
+          :loading="crud.delAllLoading"
+          @click="confirmDelAll()"
+        >
+          清空
+        </el-button>
+      </crudOperation>
+    </div>
+    <!--表格渲染-->
+    <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+      <el-table-column prop="user" label="用户名" />
+      <el-table-column prop="ip" label="IP" />
+      <el-table-column prop="module" label="模块" />
+      <el-table-column prop="content" label="描述" />
+      <el-table-column prop="clazz" label="位置" width="300" />
+      <el-table-column prop="method" label="方法" />
+      <el-table-column prop="param" label="参数" />
+      <el-table-column prop="totalTime" label="请求耗时" align="center">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.totalTime <= 300">{{ scope.row.totalTime }}ms</el-tag>
+          <el-tag v-else-if="scope.row.totalTime <= 1000" type="warning">{{ scope.row.totalTime }}ms</el-tag>
+          <el-tag v-else type="danger">{{ scope.row.totalTime }}ms</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="time" label="创建日期" width="180px" />
+    </el-table>
+    <!--分页组件-->
+    <pagination />
+  </div>
+</template>
+
+<script>
+import Search from './search'
+import { delAll } from '@/api/monitor/log'
+import CRUD, { presenter } from '@crud/crud'
+import crudOperation from '@crud/CRUD.operation'
+import pagination from '@crud/Pagination'
+
+export default {
+  name: 'Log',
+  components: { Search, crudOperation, pagination },
+  cruds() {
+    return CRUD({ title: '日志', url: 'api/logs' })
+  },
+  mixins: [presenter()],
+  created() {
+    this.crud.optShow = {
+      add: false,
+      edit: false,
+      del: false,
+      download: true
+    }
+  },
+  methods: {
+    confirmDelAll() {
+      this.$confirm(`确认清空所有操作日志吗?`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.crud.delAllLoading = true
+        delAll().then(res => {
+          this.crud.delAllLoading = false
+          this.crud.dleChangePage(1)
+          this.crud.delSuccessNotify()
+          this.crud.toQuery()
+        }).catch(err => {
+          this.crud.delAllLoading = false
+          console.log(err.response.data.message)
+        })
+      }).catch(() => {
+      })
+    }
+  }
+}
+</script>
+
+<style>
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 70px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 100%;
+}
+.demo-table-expand .el-form-item__content {
+  font-size: 12px;
+}
+</style>

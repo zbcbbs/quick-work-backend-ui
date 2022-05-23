@@ -1,7 +1,7 @@
-# quick-work-backend-ui
+# qlq-boot-rdp-backend-ui
 
 #### Description
-快速开发平台后台管理Ui代码
+快速开发平台前端页面，基于Vue+ElementUi.
 
 #### Software Architecture
 Software architecture description
