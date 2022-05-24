@@ -8,7 +8,7 @@ module.exports = {
   tokenCookieExpires: 1, // 记住密码 令牌在Cookie中存储有效期 单位：天数
   passCookieExpires: 1, // 记住密码 密码在Cookie中存储有效期 单位：天数
   uniqueOpened: true, // 是否只保持一个子菜单的展开
-  TokenKey: 'JWT-TOEKN', // 令牌缓存标记
+  TokenKey: 'JWT-TOEKN', // 令牌缓存标识
   timeout: 120000, // 请求超时时间 单位：毫秒
   sidebarLogo: true, // 显示LOGO
   showFooter: true, // 显示底部信息
