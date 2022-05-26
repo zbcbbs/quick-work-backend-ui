@@ -1,37 +1,39 @@
-# 青云快速开发平台
+## 企业快速开发平台
 
-#### 介绍
-快速开发平台前端页面，基于Vue+ElementUi.
+#### 项目介绍
+基于Vue，Element Ui开发的快速开发脚手架项目，能快速搭建企业中后台管理系统项目，并进行二次开发；
 
-#### 软件架构
-软件架构说明
+后台接口：
+
+https://gitee.com/zbcbbs/quick-work
+
+技术文档：
+
+http://zbcbbs.gitee.io/quick-work-docs
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 下载安装 nodejs
 
-#### 使用说明
+   官网：http://nodejs.cn/
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+2. 下载代码
 
-#### 参与贡献
+   ```shell
+   # 克隆代码
+   git clone https://gitee.com/zbcbbs/quick-work-backend-ui.git
+   ```
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+3. 运行
 
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+   ```shell
+   # 进入目录
+   cd quick-work-backend-ui
+   # 安装依赖
+   npm install
+   # 若npm速度慢，可以使用淘宝镜像
+   npm install --registry=https://registry.npm.taobao.org
+   # 启动
+   npm run dev
+   ```
