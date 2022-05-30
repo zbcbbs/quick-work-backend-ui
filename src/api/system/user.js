@@ -25,14 +25,6 @@ export function edit(data) {
   })
 }
 
-export function editUser(data) {
-  return request({
-    url: 'api/users/center',
-    method: 'put',
-    data
-  })
-}
-
 // 修改用户状态
 export function updateStatus(data) {
   return request({
@@ -49,7 +41,7 @@ export function updatePass(user) {
     newPass: encrypt(user.newPass)
   }
   return request({
-    url: 'api/users/updatePass/',
+    url: 'api/users/updatePass',
     method: 'post',
     data
   })
@@ -58,10 +50,11 @@ export function updatePass(user) {
 export function updateEmail(form) {
   const data = {
     password: encrypt(form.pass),
-    email: form.email
+    email: form.email,
+    code: form.code
   }
   return request({
-    url: 'api/users/updateEmail/' + form.code,
+    url: 'api/users/updateEmail',
     method: 'post',
     data
   })

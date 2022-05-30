@@ -69,7 +69,7 @@ export default {
             })
             setTimeout(() => {
               store.dispatch('LogOut').then(() => {
-                location.reload() // 为了重新实例化vue-router对象 避免bug
+                location.reload() // 刷新页面
               })
             }, 1500)
           }).catch(err => {

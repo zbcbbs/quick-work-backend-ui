@@ -74,7 +74,7 @@ export default {
         resetEmail(this.form.email).then(res => {
           this.$message({
             showClose: true,
-            message: '发送成功，验证码有效期5分钟',
+            message: '发送成功，验证码有效期1分钟',
             type: 'success'
           })
           this.codeLoading = false

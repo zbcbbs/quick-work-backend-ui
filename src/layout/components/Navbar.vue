@@ -37,8 +37,8 @@
       <!-- 下拉菜单-->
       <el-dropdown class="avatar-container right-menu-item hover-effect">
         <div class="avatar-wrapper">
-          <img :src="user.avatarName ? baseApi + '/avatar/' + user.avatarName : Avatar" class="user-avatar">
-          <span class="avatar-user-name" v-text="user.nickName" />
+          <img :src="user.detail.headImgUrl ? user.detail.headImgUrl : Avatar" class="user-avatar">
+          <span class="avatar-user-name" v-text="user.detail.nickname" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -106,13 +106,11 @@ import Avatar from '@/assets/images/user1-128x128.jpg'
 export default {
   components: {
     NavbarItem,
-    Breadcrumb,
     Hamburger,
     Screenfull,
     SizeSelect,
     Message,
     Notification,
-    Search,
     Doc
   },
   data() {
@@ -149,10 +147,10 @@ export default {
       get() {
         var active = this.$store.state.app.activeTopMenu
         console.info('顶部激活：' + active)
-        if (active == null || active == undefined) {
+        if (active === null || active === undefined) {
           var routes = this.$store.state.permission.navbarRouters
           var t = routes.filter(item => {
-            return !item.hidden && item.path != '/'
+            return !item.hidden && item.path !== '/'
           }).map(item => {
             return item
           })
@@ -204,6 +202,7 @@ export default {
       this.$confirm('确定注销并退出系统吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        lockScroll: false, // 弹窗出现时，禁止锁定 body 滚动条，防止出现页面抖动
         type: 'warning'
       }).then(() => {
         this.logout()

@@ -9,7 +9,7 @@
           <div>
             <div style="text-align: center">
               <div class="el-upload">
-                <img :src="user.avatarName ? baseApi + '/avatar/' + user.avatarName : Avatar" title="点击上传头像" class="avatar" @click="toggleShow">
+                <img :src="user.detail.headImgUrl ? user.detail.headImgUrl : Avatar" title="点击上传头像" class="avatar" @click="toggleShow">
                 <myUpload
                   v-model="show"
                   :headers="headers"
@@ -19,11 +19,11 @@
               </div>
             </div>
             <ul class="user-info">
-              <li><div style="height: 100%"><svg-icon icon-class="login" /> 登录账号<div class="user-right">{{ user.username }}</div></div></li>
-              <li><svg-icon icon-class="user1" /> 用户昵称 <div class="user-right">{{ user.nickName }}</div></li>
-              <li><svg-icon icon-class="dept" /> 所属部门 <div class="user-right"> {{ user.dept.name }}</div></li>
-              <li><svg-icon icon-class="phone" /> 手机号码 <div class="user-right">{{ user.phone }}</div></li>
-              <li><svg-icon icon-class="email" /> 用户邮箱 <div class="user-right">{{ user.email }}</div></li>
+              <li><div style="height: 100%"><svg-icon icon-class="login" /> 登录账号<div class="user-right">{{ user.detail.username }}</div></div></li>
+              <li><svg-icon icon-class="user1" /> 用户昵称 <div class="user-right">{{ user.detail.nickname }}</div></li>
+              <li><svg-icon icon-class="dept" /> 所属部门 <div class="user-right"> {{ user.detail.dept }}</div></li>
+              <li><svg-icon icon-class="phone" /> 手机号码 <div class="user-right">{{ user.detail.phone }}</div></li>
+              <li><svg-icon icon-class="email" /> 用户邮箱 <div class="user-right">{{ user.detail.email }}</div></li>
               <li>
                 <svg-icon icon-class="anq" /> 安全设置
                 <div class="user-right">
@@ -41,18 +41,18 @@
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="用户资料" name="first">
               <el-form ref="form" :model="form" :rules="rules" style="margin-top: 10px;" size="small" label-width="65px">
-                <el-form-item label="昵称" prop="nickName">
-                  <el-input v-model="form.nickName" style="width: 35%" />
-                  <span style="color: #C0C0C0;margin-left: 10px;">用户昵称不作为登录使用</span>
+                <el-form-item label="昵称" prop="nickname">
+                  <el-input v-model="form.nickname" style="width: 35%" />
+                  <span style="color: #C0C0C0;margin-left: 10px;">用户昵称</span>
                 </el-form-item>
                 <el-form-item label="手机号" prop="phone">
                   <el-input v-model="form.phone" style="width: 35%;" />
                   <span style="color: #C0C0C0;margin-left: 10px;">手机号码不能重复</span>
                 </el-form-item>
                 <el-form-item label="性别">
-                  <el-radio-group v-model="form.gender" style="width: 178px">
-                    <el-radio label="男">男</el-radio>
-                    <el-radio label="女">女</el-radio>
+                  <el-radio-group v-model="form.sex" style="width: 178px">
+                    <el-radio label="1">男</el-radio>
+                    <el-radio label="0">女</el-radio>
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item label="">
@@ -63,25 +63,33 @@
             <!--    操作日志    -->
             <el-tab-pane label="操作日志" name="second">
               <el-table v-loading="loading" :data="data" style="width: 100%;">
-                <el-table-column prop="description" label="行为" />
-                <el-table-column prop="requestIp" label="IP" />
-                <el-table-column :show-overflow-tooltip="true" prop="address" label="IP来源" />
-                <el-table-column prop="browser" label="浏览器" />
-                <el-table-column prop="time" label="请求耗时" align="center">
+                <el-table-column prop="user" label="操作者" />
+                <el-table-column prop="module" label="模块" />
+                <el-table-column prop="content" label="描述" />
+                <el-table-column prop="clazz" label="位置" :show-overflow-tooltip="true" />
+                <el-table-column prop="method" label="方法" />
+                <el-table-column prop="ip" label="IP" :show-overflow-tooltip="true" />
+                <el-table-column prop="url" label="URL" :show-overflow-tooltip="true" />
+                <el-table-column prop="param" label="参数" />
+                <el-table-column prop="status" label="状态" align="center">
                   <template slot-scope="scope">
-                    <el-tag v-if="scope.row.time <= 300">{{ scope.row.time }}ms</el-tag>
-                    <el-tag v-else-if="scope.row.time <= 1000" type="warning">{{ scope.row.time }}ms</el-tag>
-                    <el-tag v-else type="danger">{{ scope.row.time }}ms</el-tag>
+                    <el-tag v-if="scope.row.status === '1'">成功</el-tag>
+                    <el-tag v-else type="danger">异常</el-tag>
                   </template>
                 </el-table-column>
-                <el-table-column
-                  align="right"
-                >
+                <el-table-column prop="totalTime" label="请求耗时" align="center">
+                  <template slot-scope="scope">
+                    <el-tag v-if="scope.row.totalTime <= 300">{{ scope.row.totalTime }}ms</el-tag>
+                    <el-tag v-else-if="scope.row.totalTime <= 1000" type="warning">{{ scope.row.totalTime }}ms</el-tag>
+                    <el-tag v-else type="danger">{{ scope.row.totalTime }}ms</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column align="right" width="150">
                   <template slot="header">
-                    <div style="display:inline-block;float: right;cursor: pointer" @click="init">创建日期<i class="el-icon-refresh" style="margin-left: 40px" /></div>
+                    <div style="display:inline-block;float: right;cursor: pointer" @click="init">操作时间<i class="el-icon-refresh" style="margin-left: 40px" /></div>
                   </template>
                   <template slot-scope="scope">
-                    <span>{{ scope.row.createTime }}</span>
+                    <span>{{ scope.row.time }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -99,7 +107,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <updateEmail ref="email" :email="user.email" />
+    <updateEmail ref="email" :email="user.detail.email" />
     <updatePass ref="pass" />
   </div>
 </template>
@@ -113,7 +121,7 @@ import { getToken } from '@/utils/auth'
 import store from '@/store'
 import { isvalidPhone } from '@/utils/validate'
 import crud from '@/mixins/crud'
-import { editUser } from '@/api/system/user'
+import { edit } from '@/api/system/user'
 import Avatar from '@/assets/images/avatar.png'
 export default {
   name: 'Center',
@@ -140,7 +148,7 @@ export default {
       },
       form: {},
       rules: {
-        nickName: [
+        nickname: [
           { required: true, message: '请输入用户昵称', trigger: 'blur' },
           { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
@@ -153,12 +161,12 @@ export default {
   computed: {
     ...mapGetters([
       'user',
-      'updateAvatarApi',
-      'baseApi'
+      'updateAvatarApi'
     ])
   },
   created() {
-    this.form = { id: this.user.id, nickName: this.user.nickName, gender: this.user.gender, phone: this.user.phone }
+    this.form = { id: this.user.id, nickname: this.user.detail.nickname, sex: this.user.detail.sex, phone: this.user.detail.phone }
+    // 拉取用户信息
     store.dispatch('GetInfo').then(() => {})
   },
   methods: {
@@ -171,7 +179,8 @@ export default {
       }
     },
     beforeInit() {
-      this.url = 'api/logs/user'
+      this.url = 'api/logs'
+      this.query['user'] = this.user.username
       return true
     },
     cropUploadSuccess(jsonData, field) {
@@ -182,7 +191,7 @@ export default {
         this.$refs['form'].validate((valid) => {
           if (valid) {
             this.saveLoading = true
-            editUser(this.form).then(() => {
+            edit(this.form).then(() => {
               this.editSuccessNotify()
               store.dispatch('GetInfo').then(() => {})
               this.saveLoading = false

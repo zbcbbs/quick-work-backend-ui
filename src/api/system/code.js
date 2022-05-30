@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function resetEmail(data) {
   return request({
-    url: 'api/code/resetEmail?email=' + data,
+    url: 'api/code/email?email=' + data,
     method: 'post'
   })
 }

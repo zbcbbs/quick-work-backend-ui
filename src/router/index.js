@@ -44,7 +44,7 @@ router.beforeEach((to, from, next) => {
             location.reload() // 重新实例化 vue-router 避免 BUG
           })
         })
-      } else if (store.getters.loadMenus) { // 登录时未渲染路由，此处再次操作
+      } else if (store.getters.loadMenus) { // 第一次登录时需要渲染路由
         store.dispatch('updateLoadMenus') // 设置为 false 避免死循环
         loadMenus(next, to) // 渲染路由
       } else {
