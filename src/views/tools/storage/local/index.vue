@@ -38,7 +38,7 @@
             :headers="headers"
             :on-success="handleSuccess"
             :on-error="handleError"
-            :action="fileUploadApi + '?name=' + form.name"
+            :action="localUploadApi + '?name=' + form.name"
           >
             <div class="eladmin-upload"><i class="el-icon-upload" /> 添加文件</div>
             <div slot="tip" class="el-upload__tip">可上传任意格式文件，且不超过100M</div>
@@ -57,7 +57,7 @@
       <el-table-column prop="name" label="文件名">
         <template slot-scope="scope">
           <el-popover
-            :content="'/file' + scope.row.path"
+            :content="scope.row.path"
             placement="top-start"
             title="路径"
             width="200"
@@ -65,7 +65,7 @@
           >
             <a
               slot="reference"
-              :href="baseApi + '/file' + scope.row.path"
+              :href="scope.row.url"
               class="el-link--primary"
               style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color: #1890ff;font-size: 13px;"
               target="_blank"
@@ -78,8 +78,8 @@
       <el-table-column prop="path" label="预览图">
         <template slot-scope="{row}">
           <el-image
-            :src=" baseApi + '/file' + row.path"
-            :preview-src-list="[baseApi + '/file' + row.path]"
+            :src=" row.url"
+            :preview-src-list="[row.url]"
             fit="contain"
             lazy
             class="el-avatar"
@@ -132,7 +132,7 @@ export default {
   computed: {
     ...mapGetters([
       'baseApi',
-      'fileUploadApi'
+      'localUploadApi'
     ])
   },
   created() {
